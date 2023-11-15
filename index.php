@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/script.js"></script>
     <title>Rumah Makanan</title>
 </head>
 
@@ -45,14 +44,7 @@
             <button class="order-button">Pesan</button>
         </div>
         <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 2">
-            <h3>Bakso Granat</h3>
-            <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
-            <p class="harga">Harga : Rp. 10.000</p>
-            <button class="order-button">Pesan</button>
-        </div>
-        <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 2">
+            <img src="img/bakso.jpg" alt="menu 3">
             <h3>Bakso Granat</h3>
             <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
             <p class="harga">Harga : Rp. 10.000</p>
@@ -68,7 +60,7 @@
     <footer>
         <p>&copy; 2023 Restoran Enak .Hak Cipta di Limdungi</p>
     </footer>
-
+    <script src="script.js"></script>
 </body>
 
 </html>
