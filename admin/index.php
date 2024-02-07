@@ -1,3 +1,11 @@
+<?php
+session_start();
+include "../config/classDB.php";
+$id = isset($_GET['id']) ? $_GET['id'] : "";
+if (!isset($_SESSION['iduser'])) {
+    header('location:login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

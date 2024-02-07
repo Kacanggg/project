@@ -61,8 +61,8 @@ header nav a {
 }
 
 .menu-item img {
-  max-width: 100%;
-  height: auto;
+  width: 150px;
+  height: 150px;
 }
 
 .menu-item h3 {
@@ -72,6 +72,8 @@ header nav a {
 
 .menu-item p {
   color: #7777;
+  height: 80px;
+  overflow: hidden;
 }
 
 .menu-item .harga {
@@ -86,6 +88,8 @@ header nav a {
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
+  text-decoration: none;
+  margin-top: 50px;
 }
 
 .menu-item .order-button:hover {
@@ -123,4 +127,31 @@ footer {
   color: #fff;
   text-align: center;
   padding: 10px 0;
+}
+
+@media (max-width: 768px){
+  header nav ul {
+    text-align: center;
+  }
+  header nav ul li {
+    display: block;
+    margin: 10px 0;
+  }
+}
+
+.btn-checkout {
+  background-color: #4f28ec;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.login {
+  margin: auto;
+  margin-top: 100px;
+  width: 300px;
+  height: 200px;
 }

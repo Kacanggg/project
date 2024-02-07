@@ -1,3 +1,10 @@
+<?php
+session_start();
+include "config/classDB.php";
+// if (!isset($_SESSION['iduser'])) {
+//     header('location:login.php');
+// }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,43 +20,129 @@
         <h1>Rumah Makanan</h1>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Hot Promo</a></li>
-                <li><a href="#">Makanan</a></li>
-                <li><a href="#">Minuman</a></li>
+                <li><a href="index.php">Home</a></li>
+                <?php
+                $kategori = $dbo->select('kategori');
+                foreach ($kategori as $row) {
+                    ?>
+                    <li><a href="?kategori=<?= $row['idkategori'] ?>">
+                            <?= $row['kategori']; ?>
+                        </a></li>
+                    <?php
+                }
+                ?>
+                <li><a href="?hal=cart">
+                        <?php
+                        $jumlahpesanan = 0;
+                        if (!empty($_SESSION['cart'])) {
+                            foreach ($_SESSION['cart'] as $id => $val) {
+                                $jumlahpesanan += $val;
+                            }
+                        }
+                        ?>
+                        Pesanan(
+                        <?= $jumlahpesanan ?>)
+                    </a></li>
+                    <a href="logout.php">Logout</a>
             </ul>
         </nav>
     </header>
+    <?php
+    $hal = isset($_GET['hal']) ? $_GET['hal'] : "";
+    if ($hal != "") {
+        ?>
+        <section class="menu">
+            <table border="1" cellspacing=0 width="100%">
+                <tr>
+                    <th>No</th>
+                    <th>Menu</th>
+                    <th>Jumlah</th>
+                    <th>Harga</th>
+                    <th>Subtotal</th>
+                    <th>Hapus</th>
+                </tr>
+                <?php
+                $no = 1;
+                $total = 0;
+                if (!empty($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart'] as $id => $val) {
+                        $datamenu = $dbo->select("menu where idmenu = $id");
+                        foreach ($datamenu as $row) {
+                        }
+                        $total += $row['harga'] * $val;
+                        ?>
+                        <tr>
+                            <td>
+                                <?= $no++ ?>
+                            </td>
+                            <td>
+                                <?= $row['nama_menu'] ?>
+                            </td>
+                            <td>
+                                <a href="cart.php?aksi=edit&id=<?= $id ?>&val=-1">[-]</a>
+                                <?= $val ?>
+                                <a href="cart.php?aksi=edit&id=<?= $id ?>&val=1">[+]</a>
+                            </td>
+                            <td>
+                                <?= $row['harga'] ?>
+                            </td>
+                            <td>
+                                <?= $row['harga'] * $val ?>
+                            </td>
+                            <td>
+                                <a href="cart.php?id=<?= $id ?>&aksi=hapus">Hapus</a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td colspan="2">
+                        <?= $total ?>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <?php
+            if ($jumlahpesanan > 0) {
+                ?>
+                <a href="checkout.php" class="btn-checkout">Checkout</a>
+                <?php
+            }
+            ?>
+        </section>
+    <?php } ?>
     <section class="menu">
         <h2>Menu Makanan</h2>
-        <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 1">
-            <h3>Bakso Granat</h3>
-            <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
-            <p class="harga">Harga : Rp. 10.000</p>
-            <button class="order-button">Pesan</button>
-        </div>
-        <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 2">
-            <h3>Bakso Granat</h3>
-            <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
-            <p class="harga">Harga : Rp. 10.000</p>
-            <button class="order-button">Pesan</button>
-        </div>
-        <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 2">
-            <h3>Bakso Granat</h3>
-            <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
-            <p class="harga">Harga : Rp. 10.000</p>
-            <button class="order-button">Pesan</button>
-        </div>
-        <div class="menu-item">
-            <img src="img/bakso.jpg" alt="menu 3">
-            <h3>Bakso Granat</h3>
-            <p>Deskripsi tentang makanan misalnya nilai gizi dsb.</p>
-            <p class="harga">Harga : Rp. 10.000</p>
-            <button class="order-button">Pesan</button>
-        </div>
+        <?php
+        $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : "";
+
+        if ($kategori == "") {
+            $menu = $dbo->select('menu');
+        } else {
+            $menu = $dbo->select("menu where idkategori=" . $kategori);
+        }
+        foreach ($menu as $data) {
+            ?>
+            <div class="menu-item">
+                <img src="img/<?= $data['foto'] ?>" alt="menu 1">
+                <h3>
+                    <?= $data['nama_menu'] ?>
+                </h3>
+                <p>
+                    <?= $data['deskripsi'] ?>
+                </p>
+                <div class="harga">Harga : Rp.
+                    <?= number_format($data['harga'], 0, 0, '.') ?>
+                </div>
+                <br>
+                <a href="cart.php?id=<?= $data['idmenu'] ?>" class="order-button">Pesan</a>
+            </div>
+            <?php
+        }
+        ?>
     </section>
     <section class="contact">
         <h2>Hubungi Kami</h2>
